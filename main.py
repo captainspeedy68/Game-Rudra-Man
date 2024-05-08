@@ -9,6 +9,10 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Rudra Man")
 
+#set framerate
+clock = pygame.time.Clock()
+FPS = 60
+
 #load bg image
 bg_image = pygame.image.load("assets/images/background/background.jpg").convert_alpha()
 
@@ -19,14 +23,22 @@ def draw_bg():
     
 #create 2 instances of fighter
 fighter_1 = Fighter(200, 310)
-fighter_2 = Fighter(200, 310)
+fighter_2 = Fighter(700, 310)
 
 #game loop
 run = True
 
 while run:
+    clock.tick(FPS)
     #draw backgroun
     draw_bg()
+    #move fighters
+    fighter_1.move()
+    fighter_2.move()
+    
+    #draw fighters
+    fighter_1.draw(screen)
+    fighter_2.draw(screen)
     
     #event handler
     for event in pygame.event.get():
