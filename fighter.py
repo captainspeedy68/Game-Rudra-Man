@@ -105,7 +105,7 @@ class Fighter():
         #check what action the player is performing
         if self.hit == True:
             self.update_action(5)#hit
-        if self.attacking == True:
+        elif self.attacking == True:
             if self.attack_type == 1:
                 self.update_action(3)#attack 1
             elif self.attack_type == 2:
@@ -138,7 +138,9 @@ class Fighter():
             self.attacking = True
             attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
             if attacking_rect.colliderect(target.rect):
-                self.health -= 10
+                target.health -= 10
+                target.hit = True
+                
                 # print(self.health)
             
             pygame.draw.rect(surface, (0, 255, 0), attacking_rect)

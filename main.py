@@ -72,8 +72,8 @@ while run:
     draw_bg()
 
     # show player stats
-    draw_health_bar(fighter_2.health, 20, 20)
-    draw_health_bar(fighter_1.health, 580, 20)
+    draw_health_bar(fighter_1.health, 20, 20)
+    draw_health_bar(fighter_2.health, 580, 20)
 
     # move fighters
     fighter_1.move(screen_width, screen_height, screen, fighter_2)
