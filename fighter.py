@@ -17,6 +17,7 @@ class Fighter():
         self.jump = False
         self.attacking = False
         self.attack_type = 0
+        self.attack_cooldown = 0
         self.health = 100
         
         
@@ -89,6 +90,11 @@ class Fighter():
             self.flip = False
         else: 
             self.flip = True
+            
+        #apply attack cooldown
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+            
         #update player position
         self.rect.x += dx
         self.rect.y += dy
@@ -121,16 +127,18 @@ class Fighter():
             #check if an attack was executed
             if self.action == 3 or self.action == 4:
                 self.attacking = False
+                self.attack_cooldown = 50
         
         
     def attack(self, surface, target):
-        self.attacking = True
-        attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
-        if attacking_rect.colliderect(target.rect):
-            self.health -= 10
-            print(self.health)
-        
-        pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+        if self.attack_cooldown == 0:
+            self.attacking = True
+            attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
+            if attacking_rect.colliderect(target.rect):
+                self.health -= 10
+                print(self.health)
+            
+            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
         
     def update_action(self, new_action):
         #check if the new action is different to the previous one
