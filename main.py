@@ -21,6 +21,10 @@ WHITE = (255, 255, 255)
 #load bg image
 bg_image = pygame.image.load("assets/images/background/background.jpg").convert_alpha()
 
+#load spreadshits
+warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/warrior.png").convert_alpha()
+wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").convert_alpha()
+
 #function for drawing background
 def draw_bg():
     scaled_bg = pygame.transform.scale(bg_image, (screen_width, screen_height))
@@ -29,7 +33,7 @@ def draw_bg():
 #function for drawing health bars
 def draw_health_bar(health, x, y):
     ratio  = health / 100
-    pygame.draw.rect(screen, WHITE, (x - 1, y - 1, 400, 30))
+    pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 34))
     pygame.draw.rect(screen, RED, (x, y, 400, 30))
     pygame.draw.rect(screen, YELLOW, (x, y, 400 * ratio, 30))
     
