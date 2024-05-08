@@ -60,8 +60,8 @@ def draw_health_bar(health, x, y):
 
 
 # create 2 instances of fighter
-fighter_1 = Fighter(200, 310, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
-fighter_2 = Fighter(700, 310, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
+fighter_1 = Fighter(200, 310, False, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
+fighter_2 = Fighter(700, 310, True, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
 
 # game loop
 run = True
@@ -79,6 +79,10 @@ while run:
     fighter_1.move(screen_width, screen_height, screen, fighter_2)
     # fighter_2.move()
 
+
+    #update fighters
+    fighter_1.update()
+    fighter_2.update()
     # draw fighters
     fighter_1.draw(screen)
     fighter_2.draw(screen)
