@@ -2,7 +2,7 @@ import pygame
 
 
 class Fighter():
-    def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps):
+    def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, sound):
         self.player = player
         self.size = data[0]
         self.image_scale = data[1]
@@ -21,6 +21,7 @@ class Fighter():
         self.attacking = False
         self.attack_type = 0
         self.attack_cooldown = 0
+        self.attac_sound = sound
         self.hit = False
         self.health = 100
         self.alive = True
@@ -40,7 +41,7 @@ class Fighter():
         # print(animation_list)
         return animation_list
 
-    def move(self, screen_width, screen_height, surface, target):
+    def move(self, screen_width, screen_height, surface, target, round_over):
         SPEED = 10
         GRAVITY = 2
         dx = 0
@@ -51,8 +52,8 @@ class Fighter():
         # get keypresses
         key = pygame.key.get_pressed()
 
-        if self.attacking == False and self.alive == True:
-            #check player 1 controls
+        if self.attacking == False and self.alive == True and round_over == False:
+            # check player 1 controls
             if self.player == 1:
                 # movement
                 if key[pygame.K_a]:
@@ -68,13 +69,13 @@ class Fighter():
 
                 # attack
                 if key[pygame.K_r] or key[pygame.K_t]:
-                    self.attack(surface, target)
+                    self.attack(target)
                     # determine which attack type was used
                     if key[pygame.K_r]:
                         self.attack_type = 1
                     if key[pygame.K_t]:
                         self.attack_type = 2
-            #check controls for the player 2
+            # check controls for the player 2
             if self.player == 2:
                 # movement
                 if key[pygame.K_LEFT]:
@@ -90,7 +91,7 @@ class Fighter():
 
                 # attack
                 if key[pygame.K_BACKSPACE] or key[pygame.K_BACKSLASH]:
-                    self.attack(surface, target)
+                    self.attack(target)
                     # determine which attack type was used
                     if key[pygame.K_BACKSPACE]:
                         self.attack_type = 1
@@ -132,7 +133,7 @@ class Fighter():
         if self.health <= 0:
             self.health = 0
             self.alive = False
-            self.update_action(6)#death
+            self.update_action(6)  # death
 
         elif self.hit == True:
             self.update_action(5)  # hit
@@ -157,7 +158,7 @@ class Fighter():
             self.update_time = pygame.time.get_ticks()
         # check if the animation has finished
         if self.frame_index >= len(self.animation_list[self.action]):
-            #if the player is dead then end the animation
+            # if the player is dead then end the animation
             if self.alive == False:
                 self.frame_index = len(self.animation_list[self.action]) - 1
             else:
@@ -174,9 +175,11 @@ class Fighter():
                     self.attacking = False
                     self.attack_cooldown = 30
 
-    def attack(self, surface, target):
+    def attack(self, target):
         if self.attack_cooldown == 0:
+            #execute attack
             self.attacking = True
+            self.attac_sound.play()
             attacking_rect = pygame.Rect(self.rect.centerx - (
                 2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
             if attacking_rect.colliderect(target.rect):
@@ -185,7 +188,7 @@ class Fighter():
 
                 # print(self.health)
 
-            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+            # pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
 
     def update_action(self, new_action):
         # check if the new action is different to the previous one
@@ -198,6 +201,5 @@ class Fighter():
     def draw(self, surface):
         # flip the image to the other fighter so that both fighters always face each other
         img = pygame.transform.flip(self.image, self.flip, False)
-        pygame.draw.rect(surface, (255, 0, 0), self.rect)
-        surface.blit(img, (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (
-            self.offset[1] * self.image_scale)))
+        # pygame.draw.rect(surface, (255, 0, 0), self.rect)
+        surface.blit(img, (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
