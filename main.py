@@ -31,15 +31,16 @@ ROUND_OVER_COOLDOWN = 2000
 WARRIOR_SIZE = 162
 WARRIOR_SCALE= 4
 WARRIOR_OFFSET = [72, 56]
-WARRIOR_DATA = [WARRIOR_SIZE, WARRIOR_SCALE, WARRIOR_OFFSET]
+WARRIOR_DATA = [WARRIOR_SIZE, WARRIOR_SIZE, WARRIOR_SCALE, WARRIOR_OFFSET]
 WIZARD_SIZE = 250
 WIZARD_SCALE = 3
 WIZARD_OFFSET = [112, 107]
-WIZARD_DATA = [WIZARD_SIZE, WIZARD_SCALE, WIZARD_OFFSET]
-DEMON_SIZE = 370
+WIZARD_DATA = [WIZARD_SIZE, WIZARD_SIZE, WIZARD_SCALE, WIZARD_OFFSET]
+DEMON_HEIGHT = 160
+DEMON_WIDTH = 288
 DEMON_SCALE = 3
 DEMON_OFFSET = [112, 107]
-DEMON_DATA = [DEMON_SIZE, DEMON_SCALE, DEMON_OFFSET]
+DEMON_DATA = [DEMON_HEIGHT, DEMON_WIDTH, DEMON_SCALE, DEMON_OFFSET]
 
 
 #load images and sounds
@@ -69,7 +70,7 @@ victory_img =pygame.image.load("assets/images/icons/victory.png").convert_alpha(
 # define number of steps in each animation
 WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
 WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
-# DEMON_ANIMATION_STEPS = [5, 11, 14, 4, 17]
+DEMON_ANIMATION_STEPS = [5, 11, 14, 4, 22]
 
 #define font
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
@@ -95,8 +96,9 @@ def draw_health_bar(health, x, y):
 
 
 # create 2 instances of fighter
-fighter_1 = Fighter(1, 200, 310, False, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS, sword_fx)
-fighter_2 = Fighter(2, 700, 310, True, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS, magic_fx)
+fighter_1 = Fighter(1, 200, 310, False, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS, sword_fx, False)
+fighter_2 = Fighter(2, 700, 310, True, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS, magic_fx, False)
+# fighter_3 = Fighter(2, 500, 310, True, WIZARD_DATA, demon_sheet, DEMON_ANIMATION_STEPS, magic_fx, True)
 # fighter_2 = Fighter(2, 700, 310, True, DEMON_DATA, demon_sheet, DEMON_ANIMATION_STEPS)
 
 # game loop
@@ -130,9 +132,11 @@ while run:
     #update fighters
     fighter_1.update()
     fighter_2.update()
+    # fighter_3.update()
     # draw fighters
     fighter_1.draw(screen)
     fighter_2.draw(screen)
+    # fighter_3.draw(screen)
 
     #check for player defeat
     if round_over == False:
@@ -151,8 +155,9 @@ while run:
         if pygame.time.get_ticks() - round_over_time > ROUND_OVER_COOLDOWN:
             round_over = False
             intro_count = 3
-            fighter_1 = Fighter(1, 200, 310, False, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS, sword_fx)
-            fighter_2 = Fighter(2, 700, 310, True, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS, magic_fx)
+            fighter_1 = Fighter(1, 200, 310, False, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS, sword_fx, False)
+            fighter_2 = Fighter(2, 700, 310, True, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS, magic_fx, False)
+            # fighter_3 = Fighter(2, 500, 310, True, WIZARD_DATA, demon_sheet, DEMON_ANIMATION_STEPS, magic_fx)
     
     # event handler
     for event in pygame.event.get():

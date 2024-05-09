@@ -2,11 +2,13 @@ import pygame
 
 
 class Fighter():
-    def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, sound):
+    def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, sound, demon):
         self.player = player
-        self.size = data[0]
-        self.image_scale = data[1]
-        self.offset = data[2]
+        self.is_demon = demon
+        self.demon_height = data[0]
+        self.size = data[1]
+        self.image_scale = data[2]
+        self.offset = data[3]
         self.flip = flip
         self.animation_list = self.load_images(sprite_sheet, animation_steps)
         # actions = 0: idle #1:run #2: jump #3:attack 1 #4: attack 2 #5 hit #6:death
@@ -28,15 +30,22 @@ class Fighter():
 
     def load_images(self, sprite_sheet, animation_steps):
         # extract images from spritesheet
+        if not self.is_demon: 
+            h = self.size
+            w = self.size
+        else:
+            h = self.demon_height
+            w = self.size
         animation_list = []
         for y, animation in enumerate(animation_steps):
             temp_img_list = []
             for x in range(animation):
                 temp_img = sprite_sheet.subsurface(
-                    x * self.size, y * self.size, self.size, self.size)
+                    # x * self.size, y * self.size, self.size, self.size)
+                    x * w, y * h, w, h)
 
                 temp_img_list.append(pygame.transform.scale(
-                    temp_img, ((self.size * self.image_scale), (self.size * self.image_scale))))
+                    temp_img, ((w * self.image_scale), (h * self.image_scale))))
             animation_list.append(temp_img_list)
         # print(animation_list)
         return animation_list
